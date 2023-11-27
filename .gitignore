@@ -1,0 +1,14 @@
+/website/node_modules
+/website/target
+/website/dist
+/website/.cache
+/website/.vscode
+/website/.DS_Store
+/website/.idea
+/website/yarn-error.log
+/website/npm-debug.log
+/website/.next/
+/website/public/
+.env
+.swc/
+.*.env
