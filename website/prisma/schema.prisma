@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgresql"
     // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -14,14 +14,14 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+// model Example {
+//     id        Int      @id @default(autoincrement())
+//     name      String
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
 
-    @@index([name])
-}
+//     @@index([name])
+// }
 
 // Necessary for Next auth
 model Account {
@@ -66,4 +66,36 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Product {
+    id          String   @id @default(cuid())
+    name        String
+    description String?
+    price       Float
+    image       String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    brand       Brand    @relation(fields: [brandId], references: [id])
+    brandId     String
+    category    Category @relation(fields: [categoryId], references: [id])
+    categoryId  String
+}
+
+model Brand {
+    id          String   @id @default(cuid())
+    name        String   @unique
+    description String?
+    image       String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    products    Product[]
+}
+
+model Category {
+    id          String   @id @default(cuid())
+    name        String  @unique
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    products    Product[]
 }
